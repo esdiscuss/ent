@@ -7,12 +7,12 @@ var reversed = {};
 data.forEach(function (entity) {
     entity.reference = entity.reference.substring(1); //remove the '&'
     entities[entity.reference] = entity.glyph;
-    if (entity.glyph.length === 1) {
+    if (entity.glyph.length === 1 && /\;$/.test(entity.reference)) {
         reversed[entity.glyph.charCodeAt(0)] = entity.reference;
     }
 });
 
-function UTF8Escape(str){
+function escape(str){
     var i = str.length;
     var aRet = [];
 
@@ -29,5 +29,5 @@ function UTF8Escape(str){
     return aRet.join('');
 }
 
-fs.writeFileSync(__dirname + '/../entities.json', UTF8Escape(JSON.stringify(entities, null, 4)));
-fs.writeFileSync(__dirname + '/../reversed.json', UTF8Escape(JSON.stringify(reversed, null, 4)));
+fs.writeFileSync(__dirname + '/../entities.json', escape(JSON.stringify(entities, null, 4)));
+fs.writeFileSync(__dirname + '/../reversed.json', escape(JSON.stringify(reversed, null, 4)));
